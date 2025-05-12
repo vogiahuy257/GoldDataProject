@@ -1,5 +1,6 @@
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
+import { CourseIntroduction } from '@/components/course-introduction';
 
 export default function Welcome() {
     const { auth } = usePage<SharedData>().props;
@@ -10,9 +11,9 @@ export default function Welcome() {
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
-            <div className="flex min-h-screen flex-col items-center bg-[#FDFDFC] p-6 text-[#1b1b18] lg:justify-center lg:p-8 dark:bg-[#0a0a0a]">
-                <header className="mb-6 w-full max-w-[335px] text-sm not-has-[nav]:hidden lg:max-w-4xl">
-                    <nav className="flex items-center justify-end gap-4">
+            <div className="flex min-h-screen flex-col items-center bg-[#FDFDFC] text-[#1b1b18] justify-center lg:p-8 dark:bg-[#0a0a0a]">
+                <header className="fixed top-0 bor w-full text-sm lg:max-w-5xl">
+                    <nav className="flex items-center backdrop-blur-md justify-end gap-4 p-4 shadow-xs rounded-b-md border border-[#19140035] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]">
                         {auth.user ? (
                             <Link
                                 href={route('dashboard')}
@@ -38,12 +39,10 @@ export default function Welcome() {
                         )}
                     </nav>
                 </header>
-                <div className="flex w-full items-center justify-center opacity-100 transition-opacity duration-750 lg:grow starting:opacity-0">
-                    <main className="flex w-full max-w-[335px] flex-col-reverse lg:max-w-4xl lg:flex-row">
-                        <h1>hello</h1>
-                    </main>
+                <div className="w-full mt-24 text-sm lg:max-w-5xl lg:mt-10">
+                  {/* phần cần thiết kế thêm các nội dung liện quan đến Tên Môn học, Tên đề tài, Danh sách sinh viện thực hiện và mã số sinh viện */}
+                  <CourseIntroduction />
                 </div>
-                <div className="hidden h-14.5 lg:block"></div>
             </div>
         </>
     );
