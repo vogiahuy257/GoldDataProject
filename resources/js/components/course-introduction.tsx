@@ -1,5 +1,7 @@
 import { Card } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import { Link } from "@inertiajs/react"
+import { ChevronRight } from "lucide-react"
 
 const metadata = {
   course: {
@@ -7,13 +9,13 @@ const metadata = {
     class: "CNTT.CQ.02",
     topic: "CRAWL VÀ HIỂN THỊ TRỰC QUAN DỮ LIỆU VỀ GIÁ VÀNG TRÊN CÁC TRANG WEB PNJ, DOJI, SJC",
     description: "Đề tài này nhằm thu thập và hiển thị trực quan dữ liệu về giá vàng từ các trang web PNJ, DOJI và SJC. Dữ liệu sẽ được crawl từ các trang web này và lưu trữ vào cơ sở dữ liệu PostgreSQL trên Cloud. Sau đó, dữ liệu sẽ được hiển thị trên giao diện người dùng sử dụng React và TailwindCSS.",
-    
+
   },
   crawl: {
     title: "Xử lý Crawl Dữ liệu",
     details: [
       "Thu thập dữ liệu từ PNJ, DOJI, SJC",
-      "Sử dụng Python các thư viện Python hỗ trợ crawl dữ liệu",
+      "Sử dụng các thư viện Python hỗ trợ crawl dữ liệu",
       "Lưu trữ dữ liệu vào hệ quản trị CSDL PostgreSQL trên Cloud",
     ],
     image: "/images/crawl.png", // Đường dẫn ảnh minh họa crawl
@@ -50,7 +52,7 @@ const metadata = {
   },
 }
 
-export function CourseIntroduction() {
+export function CourseIntroduction({ auth }: any) {
   return (
     <div className="flex min-h-screen flex-col items-center bg-[#FDFDFC] text-[#1b1b18] dark:bg-[#0a0a0a] dark:text-white justify-center lg:p-4">
       {/* 1. Thông tin môn học */}
@@ -67,6 +69,23 @@ export function CourseIntroduction() {
           <h2 className="text-2xl font-semibold">Tên Đề Tài</h2>
           <p className="text-lg text-zinc-600 dark:text-zinc-400">{metadata.course.topic}</p>
           <p className="text-md text-zinc-500 dark:text-zinc-400">{metadata.course.description}</p>
+          {auth.user ? (
+            <Link
+              href={route('dashboard')}
+              className="flex justify-center w-max m-auto items-center gap-2 mt-6 rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+            >
+              Go to Dashboard
+              <ChevronRight size={18} />
+            </Link>
+          ) : (
+              <Link
+                href={route('login')}
+                className="flex justify-center w-max m-auto items-center gap-2 mt-6 rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+              >
+                Join and Log In
+                <ChevronRight size={18}/>
+              </Link>
+          )}
         </div>
 
 
@@ -119,8 +138,8 @@ export function CourseIntroduction() {
               <Card key={student.id} className="bg-zinc-50 dark:bg-zinc-800 border dark:border-zinc-700 overflow-hidden">
                 <div className="px-4 space-y-4">
                   <div>
-                      <h4 className="font-medium">{student.name}</h4>
-                      <p className="text-sm mt-1 text-zinc-500 dark:text-zinc-400">Mã SV: {student.id}</p>
+                    <h4 className="font-medium">{student.name}</h4>
+                    <p className="text-sm mt-1 text-zinc-500 dark:text-zinc-400">Mã SV: {student.id}</p>
                   </div>
 
                   <div>
