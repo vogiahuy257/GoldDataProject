@@ -34,6 +34,8 @@ export default function GoldPriceTable({ source }: GoldPriceTableProps) {
   const { getBySource, loading, error,update,remove,create } = useGoldPriceApi();
   const [open, setOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<GoldPrice | null>(null);
+  const nowDate = () => new Date().toISOString();
+
   const [formData, setFormData] = useState<Omit<GoldPrice, 'id'>>({
     source: source,
     gold_type: '',
@@ -65,17 +67,23 @@ export default function GoldPriceTable({ source }: GoldPriceTableProps) {
     }));
   };
 
-  const handleSubmit = async () => {
+  
+const handleSubmit = async () => {
   try {
+    const payload = {
+      ...formData,
+      scraped_at: nowDate(),
+    };
+
     if (editingItem) {
-      const updated = await update(editingItem.id, formData);
+      const updated = await update(editingItem.id, payload);
       if (updated) {
         setData((prev) =>
           prev.map((item) => (item.id === editingItem.id ? updated : item))
         );
       }
     } else {
-      const created = await create(formData);
+      const created = await create(payload);
       if (created) {
         setData((prev) => [created, ...prev]);
       }
@@ -96,6 +104,7 @@ export default function GoldPriceTable({ source }: GoldPriceTableProps) {
     });
   }
 };
+
 
 const handleDelete = async (id: number) => {
   const success = await remove(id);
@@ -160,26 +169,73 @@ const filteredData = data
               </DialogHeader>
 
               <div className="grid grid-cols-1 gap-4 py-4">
-                {[
-                  { label: 'Nguồn', name: 'source' },
-                  { label: 'Loại vàng', name: 'gold_type' },
-                  { label: 'Giá mua', name: 'buy_price' },
-                  { label: 'Giá bán', name: 'sell_price' },
-                  { label: 'Ngày (YYYY-MM-DD)', name: 'date' },
-                  { label: 'Giờ (HH:mm:ss)', name: 'time' },
-                  { label: 'Scraped at (ISO)', name: 'scraped_at' },
-                ].map((field) => (
-                  <div key={field.name} className="space-y-1">
-                    <Label htmlFor={field.name}>{field.label}</Label>
-                    <Input
-                      id={field.name}
-                      name={field.name}
-                      placeholder={field.label}
-                      value={(formData as any)[field.name]}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                ))}
+                <div className="space-y-1">
+                  <Label htmlFor="source">Nguồn</Label>
+                  <Input
+                    id="source"
+                    name="source"
+                    value={formData.source}
+                    readOnly
+                    className="bg-gray-100 cursor-not-allowed"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <Label htmlFor="gold_type">Loại vàng</Label>
+                  <Input
+                    id="gold_type"
+                    name="gold_type"
+                    placeholder="VD: Vàng 9999"
+                    value={formData.gold_type ?? ''}
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <Label htmlFor="buy_price">Giá mua</Label>
+                  <Input
+                    id="buy_price"
+                    name="buy_price"
+                    type="number"
+                    placeholder="VD: 7400000"
+                    value={formData.buy_price ?? ''}
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <Label htmlFor="sell_price">Giá bán</Label>
+                  <Input
+                    id="sell_price"
+                    name="sell_price"
+                    type="number"
+                    placeholder="VD: 7450000"
+                    value={formData.sell_price ?? ''}
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <Label htmlFor="date">Ngày</Label>
+                  <Input
+                    id="date"
+                    name="date"
+                    type="date"
+                    value={formData.date ?? ''}
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <Label htmlFor="time">Giờ</Label>
+                  <Input
+                    id="time"
+                    name="time"
+                    type="time"
+                    value={formData.time ?? ''}
+                    onChange={handleInputChange}
+                  />
+                </div>
               </div>
 
               <DialogFooter>
