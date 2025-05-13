@@ -119,17 +119,17 @@ const chartData = React.useMemo(() => {
 }, [data, priceType, timeRange]);
 
 
-
 // Format ngày hiển thị trên trục X
 const formatXAxis = (dateStr: string) => {
   const date = new Date(dateStr);
   if (isNaN(date.getTime())) return "";
-  return date.toLocaleDateString("vi-VN", {
+  return date.toLocaleString("vi-VN", {
     day: "2-digit",
     month: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit"
   });
 };
-
 
   // Custom tooltip formatter
   const customTooltip = ({ active, payload, label }: any) => {
@@ -140,7 +140,7 @@ const formatXAxis = (dateStr: string) => {
           <p className="font-medium">{`${dataPoint.date} ${dataPoint.time}`}</p>
           {payload.map((entry: any, index: number) => (
             <p key={index} style={{ color: entry.color }}>
-              {`${entry.name}: ${entry.value.toLocaleString()}₫`}
+              {`${entry.name}: ${entry.value.toLocaleString()}VNĐ`}
             </p>
           ))}
         </div>
@@ -148,6 +148,14 @@ const formatXAxis = (dateStr: string) => {
     }
     return null;
   };
+
+  const formatYAxis = (value: number) => {
+    if (value >= 1_000_000_000) return `${(value / 1_000_000_000).toFixed(1)} tỷ`;
+    if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)} tr`;
+    if (value >= 1_000) return `${(value / 1_000).toFixed(1)}k`;
+    return value.toString();
+  };
+
 
   return (
     <Card>
@@ -193,22 +201,31 @@ const formatXAxis = (dateStr: string) => {
         ) : (
           <ResponsiveContainer width="100%" height={350}>
             <AreaChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid strokeDasharray="3 3"  />
               <XAxis 
-                dataKey="date" 
+                dataKey="timestamp" 
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                minTickGap={32}
                 tickFormatter={formatXAxis}
-                minTickGap={22}
               />
+
               <YAxis
-                tickFormatter={(v) => `${v.toLocaleString()}₫`}
-                domain={[0, (dataMax:any) => dataMax * 1.1]} // Thêm khoảng 10% trên giá trị tối đa
-                />
+                width={80} // tăng từ mặc định 60 -> 80 hoặc 100 nếu cần
+                tickFormatter={formatYAxis}
+                tickCount={10}
+                domain={["auto", "auto"]}
+                tickMargin={8}
+              />
+
+
 
               <Tooltip content={customTooltip} />
               {SOURCES.map((source) => (
                 <Area
                   key={source}
-                  type="monotone"
+                  type="natural"
                   dataKey={source}
                   stroke={chartColors[source]}
                   fill={chartColors[source]}

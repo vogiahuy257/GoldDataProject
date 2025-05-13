@@ -43,6 +43,7 @@ export default function GoldPriceTable({ source }: GoldPriceTableProps) {
     time: '',
     scraped_at: '',
   });
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -117,57 +118,76 @@ const handleEdit = (item: GoldPrice) => {
   setOpen(true);
 };
 
+const filteredData = data
+  .filter((item) => item.gold_type) // bỏ các item có gold_type null
+  .filter((item) =>
+    item.gold_type!.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+
+
+
   return (
     <div className="p-4">
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-xl font-bold">Giá vàng {source}</h2>
-        <Dialog
-          open={open}
-          onOpenChange={(isOpen) => {
-            setOpen(isOpen);
-            if (!isOpen) setEditingItem(null);
-          }}
-        >
-          <DialogTrigger asChild>
-            <Button className=' cursor-pointer'>
-              <Plus className="h-4 w-4" />Thêm
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[600px]">
-            <DialogHeader>
-              <DialogTitle className="text-lg font-semibold">
-                {editingItem ? 'Chỉnh sửa giá vàng' : 'Thêm giá vàng mới'}
-              </DialogTitle>
-            </DialogHeader>
+      <div className="mb-4 flex flex-col justify-start gap-4">
+          <h2 className="text-xl font-bold text-center">Giá vàng {source}</h2> 
+          <div className='flex items-center justify-end gap-2'>
+            <Input
+              type="text"
+              placeholder="Tìm theo loại vàng..."
+              className="w-[250px] mr-auto"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
 
-            <div className="grid grid-cols-1 gap-4 py-4">
-              {[
-                { label: 'Nguồn', name: 'source' },
-                { label: 'Loại vàng', name: 'gold_type' },
-                { label: 'Giá mua', name: 'buy_price' },
-                { label: 'Giá bán', name: 'sell_price' },
-                { label: 'Ngày (YYYY-MM-DD)', name: 'date' },
-                { label: 'Giờ (HH:mm:ss)', name: 'time' },
-                { label: 'Scraped at (ISO)', name: 'scraped_at' },
-              ].map((field) => (
-                <div key={field.name} className="space-y-1">
-                  <Label htmlFor={field.name}>{field.label}</Label>
-                  <Input
-                    id={field.name}
-                    name={field.name}
-                    placeholder={field.label}
-                    value={(formData as any)[field.name]}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              ))}
-            </div>
+          <Dialog
+            open={open}
+            onOpenChange={(isOpen) => {
+              setOpen(isOpen);
+              if (!isOpen) setEditingItem(null);
+            }}
+          >
+            <DialogTrigger asChild>
+              <Button className=' cursor-pointer'>
+                <Plus className="h-4 w-4" />Thêm
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[600px]">
+              <DialogHeader>
+                <DialogTitle className="text-lg font-semibold">
+                  {editingItem ? 'Chỉnh sửa giá vàng' : 'Thêm giá vàng mới'}
+                </DialogTitle>
+              </DialogHeader>
 
-            <DialogFooter>
-              <Button onClick={handleSubmit}>{editingItem ? 'Cập nhật' : 'Lưu'}</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+              <div className="grid grid-cols-1 gap-4 py-4">
+                {[
+                  { label: 'Nguồn', name: 'source' },
+                  { label: 'Loại vàng', name: 'gold_type' },
+                  { label: 'Giá mua', name: 'buy_price' },
+                  { label: 'Giá bán', name: 'sell_price' },
+                  { label: 'Ngày (YYYY-MM-DD)', name: 'date' },
+                  { label: 'Giờ (HH:mm:ss)', name: 'time' },
+                  { label: 'Scraped at (ISO)', name: 'scraped_at' },
+                ].map((field) => (
+                  <div key={field.name} className="space-y-1">
+                    <Label htmlFor={field.name}>{field.label}</Label>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      placeholder={field.label}
+                      value={(formData as any)[field.name]}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <DialogFooter>
+                <Button onClick={handleSubmit}>{editingItem ? 'Cập nhật' : 'Lưu'}</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+          </div>
       </div>
 
       {error && <p className="text-red-500">{error}</p>}
@@ -194,7 +214,7 @@ const handleEdit = (item: GoldPrice) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data.map((item) => (
+                {filteredData.map((item) => (
                   <TableRow key={item.id}>
                     <TableCell>{item.source || '-'}</TableCell>
                     <TableCell>{item.gold_type || '-'}</TableCell>
