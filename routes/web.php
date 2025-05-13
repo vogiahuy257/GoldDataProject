@@ -6,9 +6,7 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
-
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
+Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
      Route::get('dashboard/pnj', function () {
@@ -20,6 +18,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard/sjc', function () {
         return Inertia::render('sjcdata');  // Trang này sẽ hiển thị component React 'PNJData'
     })->name('pnjdata');
-});
+
+// Route::middleware(['auth', 'verified'])->group(function () {
+    
+// });
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
