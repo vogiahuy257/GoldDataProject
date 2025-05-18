@@ -2,33 +2,16 @@ import { Card } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Link } from "@inertiajs/react"
 import { ChevronRight } from "lucide-react"
+import { CrawlDetailDialog } from "./CrawlDetailDialog"
+import { FrontendDetailDialog } from "./FrontendDetailDialog"
 
 const metadata = {
   course: {
     name: "Kỹ thuật lập trình trong phân tích dữ liệu",
     class: "CNTT.CQ.02",
-    topic: "CRAWL VÀ HIỂN THỊ TRỰC QUAN DỮ LIỆU VỀ GIÁ VÀNG TRÊN CÁC TRANG WEB PNJ, DOJI, SJC",
+    topic: "THU THẬP VÀ XỬ LÝ GIÁ VÀNG TỪ CÁC TRANG WEBSITE PNJ, DOJI VÀ SJC",
     description: "Đề tài này nhằm thu thập và hiển thị trực quan dữ liệu về giá vàng từ các trang web PNJ, DOJI và SJC. Dữ liệu sẽ được crawl từ các trang web này và lưu trữ vào cơ sở dữ liệu PostgreSQL trên Cloud. Sau đó, dữ liệu sẽ được hiển thị trên giao diện người dùng sử dụng React và TailwindCSS.",
-
-  },
-  crawl: {
-    title: "Xử lý Crawl Dữ liệu",
-    details: [
-      "Thu thập dữ liệu từ PNJ, DOJI, SJC",
-      "Sử dụng các thư viện Python hỗ trợ crawl dữ liệu",
-      "Lưu trữ dữ liệu vào hệ quản trị CSDL PostgreSQL trên Cloud",
-    ],
-    image: "/images/crawl.png", // Đường dẫn ảnh minh họa crawl
-  },
-  frontend: {
-    title: "Công Nghệ Phát Triển Giao Diện",
-    details: [
-      "Laravel",
-      "ReactJS, TailwindCSS, shadcn/ui",
-      "Deploy Laravel Cloud",
-      "Database PostgreSQL",
-    ],
-    image: "/images/frontend.png", // Đường dẫn ảnh minh họa giao diện
+    logo_school: "/images/Logo_TDMU.svg", // Đường dẫn logo trường
   },
   team: {
     name: "Nhóm 16 - Kỹ thuật lập trình trong phân tích dữ liệu",
@@ -58,6 +41,11 @@ export function CourseIntroduction({ auth }: any) {
       {/* 1. Thông tin môn học */}
       <Card className="w-full max-w-6xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 md:p-8 space-y-10">
         <div className="space-y-4 text-center">
+          <img
+                src={metadata.course.logo_school}
+                alt="Logo trường"
+                className="w-60 h-auto mx-auto mb-4"
+              />
           <h1 className="text-3xl md:text-4xl font-bold">Môn học: {metadata.course.name}</h1>
           <h2 className="text-xl md:text-2xl text-zinc-500 dark:text-zinc-400">Lớp học: {metadata.course.class}</h2>
           <p className="text-md text-zinc-500 dark:text-zinc-400">Giảng viên: Nguyễn Thế Bảo</p>
@@ -65,9 +53,9 @@ export function CourseIntroduction({ auth }: any) {
       </Card>
       <Card className="mt-8 w-full max-w-6xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 md:p-8 space-y-10">
         {/* 2. Tên đề tài */}
-        <div className="text-center space-y-2">
-          <h2 className="text-2xl font-semibold">Tên Đề Tài</h2>
-          <p className="text-lg text-zinc-600 dark:text-zinc-400">{metadata.course.topic}</p>
+        <div className="text-center space-y-3">
+          <h2 className="text-2xl font-semibold">Đề Tài</h2>
+          <p className="text-lg font-bold text-zinc-600 dark:text-zinc-300">{metadata.course.topic}</p>
           <p className="text-md text-zinc-500 dark:text-zinc-400">{metadata.course.description}</p>
           {auth.user ? (
             <Link
@@ -93,42 +81,17 @@ export function CourseIntroduction({ auth }: any) {
         <div className="space-y-8">
           <h3 className="text-xl font-semibold text-center">Giới Thiệu Đề Tài</h3>
           <div className="grid md:grid-cols-2 gap-6">
-
             {/* Crawl Data */}
-            <Card className="bg-zinc-100 dark:bg-zinc-800 border dark:border-zinc-700 p-4 space-y-4">
-              <h4 className="font-semibold text-lg">{metadata.crawl.title}</h4>
-              <ul className="list-disc pl-5 text-zinc-600 dark:text-zinc-300 space-y-1">
-                {metadata.crawl.details.map((item, idx) => (
-                  <li key={idx}>{item}</li>
-                ))}
-              </ul>
-              <img
-                src={metadata.crawl.image}
-                alt="Crawl minh họa"
-                className="rounded-md w-full aspect-video object-cover border border-zinc-300 dark:border-zinc-700"
-              />
-            </Card>
+            <CrawlDetailDialog/>
 
             {/* Frontend Tech */}
-            <Card className="bg-zinc-100 dark:bg-zinc-800 border dark:border-zinc-700 p-4 space-y-1">
-              <h4 className="font-semibold text-lg">{metadata.frontend.title}</h4>
-              <ul className="list-disc pl-5 text-zinc-600 dark:text-zinc-300 space-y-1">
-                {metadata.frontend.details.map((item, idx) => (
-                  <li key={idx}>{item}</li>
-                ))}
-              </ul>
-              <img
-                src={metadata.frontend.image}
-                alt="Frontend minh họa"
-                className="rounded-md w-full aspect-video object-cover border border-zinc-300 dark:border-zinc-700"
-              />
-            </Card>
+            <FrontendDetailDialog/>
           </div>
         </div>
-
-        <Separator className="bg-zinc-300 dark:bg-zinc-800" />
-
+      </Card>
+      
         {/* 4. Giới thiệu nhóm thực hiện */}
+        <Card className="mt-8 w-full max-w-6xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 md:p-8 space-y-10">
         <div className="space-y-6">
           <h3 className="text-xl font-semibold text-center">Giới Thiệu Nhóm Thực Hiện</h3>
           <p className="text-center text-zinc-500 dark:text-zinc-400">{metadata.team.name}</p>
@@ -158,7 +121,7 @@ export function CourseIntroduction({ auth }: any) {
             ))}
           </div>
         </div>
-      </Card>
+        </Card>
     </div>
   )
 }
