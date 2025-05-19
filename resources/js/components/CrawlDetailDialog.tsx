@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react"
 
 const crawlSummaryList = [
   "Thu thập dữ liệu từ PNJ, DOJI, SJC",
@@ -62,7 +62,7 @@ export function CrawlDetailDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild onClick={() => setIndex(0)}>
-        <Card className="cursor-pointer bg-zinc-100 dark:bg-zinc-800 border dark:border-zinc-700 p-4 space-y-4 hover:shadow-lg transition-shadow">
+        <Card className="relative group cursor-pointer bg-zinc-100 dark:bg-zinc-800 border dark:border-zinc-700 p-4 space-y-4 hover:shadow-lg transition-shadow">
           <h4 className="font-semibold text-lg">Xử lý Crawl Dữ liệu</h4>
           <ul className="list-disc pl-5 text-zinc-600 dark:text-zinc-300 space-y-1">
             {crawlSummaryList.map((item, idx) => (
@@ -74,6 +74,10 @@ export function CrawlDetailDialog() {
             alt="Crawl minh họa"
             className="rounded-md w-full aspect-video object-cover border border-zinc-300 dark:border-zinc-700"
           />
+          <div className="absolute top-0 right-0 w-8 h-8 flex justify-center items-center bg-black/90 text-white rounded-tr-xl rounded-bl-md group-hover:w-full group-hover:h-full group-hover:bg-black/40 group-hover:rounded-xl  transition-all duration-300 ease-in-out">
+            <p className="hidden pr-1 group-hover:block text-sm">xem chi tiết</p>
+            <ArrowUpRight size={24}/>
+          </div>
         </Card>
       </DialogTrigger>
 

@@ -19,12 +19,12 @@ const metadata = {
       {
         id: "2224802010822",
         name: "Võ Gia Huy",
-        tasks: ["Phát triển Giao diện", "Cwarl dữ liệu trang PNG"],
+        tasks: ["Phát triển Giao diện", "Cwarl dữ liệu trang PNJ"],
       },
       {
         id: "2224802010476",
         name: "Lê Nguyễn Bảo Trân",
-        tasks: ["Gửi crawl dữ liệu lên database", "Crawl dữ liệu trang SJC"],
+        tasks: ["Gửi crawl dữ liệu lên database", "Crawl dữ liệu trang SJC", "Soạn báo cáo"],
       },
       {
         id: "2224802010846",
@@ -75,12 +75,15 @@ export function CourseIntroduction({ auth }: any) {
               </Link>
           )}
         </div>
-
-
-        {/* 3. Giới thiệu đề tài */}
-        <div className="space-y-8">
+      </Card>
+      {/* 3. Giới thiệu đề tài */}
+      <Card className="mt-8 w-full max-w-6xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 md:p-8 space-y-10">
+        <div className="space-y-4">
           <h3 className="text-xl font-semibold text-center">Giới Thiệu Đề Tài</h3>
-          <div className="grid md:grid-cols-2 gap-6">
+          <p className="text-md text-center text-zinc-500 dark:text-zinc-400">
+            Hệ thống thu thập và lưu trữ dữ liệu giá vàng từ PNJ, DOJI, SJC bằng Python, phục vụ giám sát và trực quan hóa biến động.
+          </p>
+          <div className="grid mt-8 md:grid-cols-2 gap-6">
             {/* Crawl Data */}
             <CrawlDetailDialog/>
 
@@ -88,7 +91,7 @@ export function CourseIntroduction({ auth }: any) {
             <FrontendDetailDialog/>
           </div>
         </div>
-      </Card>
+        </Card>
       
         {/* 4. Giới thiệu nhóm thực hiện */}
         <Card className="mt-8 w-full max-w-6xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 md:p-8 space-y-10">

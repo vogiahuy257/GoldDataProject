@@ -152,7 +152,7 @@ export default function GoldPriceTable({ source }: GoldPriceTableProps) {
   .filter((item) =>
     item.gold_type!.toLowerCase().includes(searchTerm.toLowerCase())
   )
-  .filter((item) => !selectedDate || item.date === selectedDate)
+  .filter((item) =>selectedDate === "" || selectedDate === "all" || item.date === selectedDate)
   .sort((a, b) => {
     if (!sortOption) return 0;
 
@@ -170,44 +170,49 @@ export default function GoldPriceTable({ source }: GoldPriceTableProps) {
     }
   });
 
+
   return (
     <div className="p-4">
       <div className="mb-4 flex flex-col justify-start gap-4">
         <h2 className="text-xl font-bold text-center">Giá vàng {source}</h2>
-        <div className="flex items-center justify-end gap-2">
-          <Input
-            type="text"
-            placeholder="Tìm theo loại vàng..."
-            className="w-[250px] mr-auto"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        <div className="flex flex-col items-center gap-2 md:flex-row md:justify-start">
+          <div className='flex flex-col justify-center gap-2 mr-auto md:flex-row'>
+            <Input
+              type="text"
+              placeholder="Tìm theo loại vàng..."
+              className="w-full max-w-[250px]"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
 
-          <Select value={selectedDate ?? ""} onValueChange={setSelectedDate}>
-            <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder="Tất cả ngày" />
-            </SelectTrigger>
-            <SelectContent>
-              {uniqueDates.map((date) => (
-                <SelectItem key={date} value={date ?? ""}>
-                  {date}
+            <Select value={selectedDate ?? ""} onValueChange={setSelectedDate}>
+              <SelectTrigger className="w-full max-w-[180px]">
+                <SelectValue placeholder="Tất cả ngày" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem key={'all'} value={'all'}>
+                  Tất cả ngày
                 </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-           {/* ✅ Thêm Select để chọn sắp xếp */}
-          <Select value={sortOption} onValueChange={(val) => setSortOption(val as SortOption)}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Sắp xếp theo giá" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="buy_asc">Giá mua tăng dần</SelectItem>
-              <SelectItem value="buy_desc">Giá mua giảm dần</SelectItem>
-              <SelectItem value="sell_asc">Giá bán tăng dần</SelectItem>
-              <SelectItem value="sell_desc">Giá bán giảm dần</SelectItem>
-            </SelectContent>
-          </Select>
-
+                {uniqueDates.map((date) => (
+                  <SelectItem key={date} value={date ?? ""}>
+                    {date}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {/* ✅ Thêm Select để chọn sắp xếp */}
+            <Select value={sortOption} onValueChange={(val) => setSortOption(val as SortOption)}>
+              <SelectTrigger className="w-full max-w-[180px]">
+                <SelectValue placeholder="Sắp xếp theo giá" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="buy_asc">Giá mua tăng dần</SelectItem>
+                <SelectItem value="buy_desc">Giá mua giảm dần</SelectItem>
+                <SelectItem value="sell_asc">Giá bán tăng dần</SelectItem>
+                <SelectItem value="sell_desc">Giá bán giảm dần</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <Dialog
             open={open}
             onOpenChange={(isOpen) => {
@@ -216,7 +221,7 @@ export default function GoldPriceTable({ source }: GoldPriceTableProps) {
             }}
           >
             <DialogTrigger asChild>
-              <Button className="cursor-pointer">
+              <Button className="mr-auto md:mr-0 cursor-pointer">
                 <Plus className="h-4 w-4" /> Thêm
               </Button>
             </DialogTrigger>
@@ -328,7 +333,7 @@ export default function GoldPriceTable({ source }: GoldPriceTableProps) {
                   <TableHead>Hành động</TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
+              <TableBody> 
                 {filteredData.map((item) => (
                   <TableRow key={item.id}>
                     <TableCell>{item.source || '-'}</TableCell>
