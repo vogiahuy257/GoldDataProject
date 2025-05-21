@@ -25,19 +25,18 @@ const crawlSections = [
   },
   {
     title: "Crawl dữ liệu từ PNJ",
-    description: `Dữ liệu từ website PNJ được thu thập bằng Python sử dụng thư viện requests và BeautifulSoup. Hệ thống định kỳ kiểm tra và cập nhật giá vàng.`,
+    description: `Dữ liệu từ website PNJ được thu thập bằng Python sử dụng thư viện Selenium để điều khiển trình duyệt và lấy dữ liệu động. Hệ thống tự động trích xuất ngày cập nhật, loại vàng, giá mua và giá bán, sau đó chuyển đổi và lưu trữ vào cơ sở dữ liệu.`,
     image: "/images/pnj-crawl.png",
-  },
-  {
-    title: "Crawl dữ liệu từ SJC",
-    description: `Tương tự PNJ, trang web SJC được crawl và xử lý HTML để lấy dữ liệu giá vàng từng khu vực. Dữ liệu sau đó được định dạng và đưa vào pipeline xử lý.`,
-    image: "/images/sjc-crawl.png",
-  },
-  {
-    title: "Crawl dữ liệu từ DOJI",
-    description: `Trang web DOJI có cấu trúc HTML riêng, cần xử lý XPath và CSS selector phù hợp. Hệ thống đảm bảo crawl chính xác các loại vàng và giá tương ứng.`,
-    image: "/images/doji-crawl.png",
-  },
+  },{
+  title: "Crawl dữ liệu từ SJC",
+  description: `Hệ thống sử dụng Selenium để truy cập trang web SJC và trích xuất thông tin giá vàng tại từng khu vực. Các dữ liệu như loại vàng, giá mua - giá bán được xử lý từ các thẻ HTML, chuẩn hóa đơn vị và ghi nhận thời điểm crawl trước khi lưu vào cơ sở dữ liệu.`,
+  image: "/images/sjc-crawl.png",
+},{
+  title: "Crawl dữ liệu từ DOJI",
+  description: `Trang web DOJI được crawl bằng Selenium với các thao tác định vị phức tạp thông qua CSS Selector và XPath. Hệ thống tự động nhận diện các bảng giá, chuẩn hóa dữ liệu và đảm bảo độ chính xác khi lưu trữ các loại vàng và mức giá tương ứng.`,
+  image: "/images/doji-crawl.png",
+},
+
   {
     title: "Lưu trữ vào CSDL PostgreSQL",
     description: `Dữ liệu được lưu trữ vào PostgreSQL Cloud, với cấu trúc bảng rõ ràng cho từng nguồn dữ liệu. Quá trình insert có kiểm tra trùng lặp và hỗ trợ backup.`,

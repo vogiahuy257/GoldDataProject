@@ -1,5 +1,4 @@
 import { GoldPriceChart } from '@/components/gold-price-chart-all';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import { GoldPriceChartCard } from '@/components/GoldPriceChartCard';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
