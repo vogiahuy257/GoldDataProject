@@ -57,6 +57,7 @@ export function CourseIntroduction({ auth }: any) {
           <h2 className="text-2xl font-semibold">Đề Tài</h2>
           <p className="text-lg font-bold text-zinc-600 dark:text-zinc-300">{metadata.course.topic}</p>
           <p className="text-md text-zinc-500 dark:text-zinc-400">{metadata.course.description}</p>
+            <img className=" mx-auto mt-4" src="./images/QR.svg" alt="QR web" />
           {auth.user ? (
             <Link
               href={route('dashboard')}
